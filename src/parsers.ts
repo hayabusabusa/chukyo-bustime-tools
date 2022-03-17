@@ -3,13 +3,13 @@ import { WorkSheet } from "xlsx";
 import { Calendar } from "./types";
 
 /// `xlsx` ファイルをパースするオブジェクトのインターフェース.
-export interface XLSXParsable {
+export interface XLSXParsable<T> {
   /// シートからデータを抜き出す.
-  parse(sheet: WorkSheet): Calendar[];
+  parse(sheet: WorkSheet): T;
 }
 
 /// カレンダーの xlsx ファイルをパースするクラス.
-export class CalendarParser implements XLSXParsable {
+export class CalendarParser implements XLSXParsable<Calendar[]> {
 
   parse(sheet: WorkSheet): Calendar[] {
     // 日付が入っている X 座標.
