@@ -16,10 +16,10 @@ export function formatteDate (year: number, month: number, date: number) {
  */
 export function formatteDiagram(diagram: string) {
   // 英字じゃない場合は運休とみなす
-  if (diagram.match(/[Ａ-Ｚａ-ｚ０-９]]/g) == null) {
+  if (diagram.match(/[Ａ-Ｚａ-ｚ０-９]/g) == null) {
     return "suspension";
   }
-  return diagram.replace(/[Ａ-Ｚａ-ｚ０-９]]/g, (str) => {
+  return diagram.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (str) => {
     return String.fromCharCode(str.charCodeAt(0) - 65248);
   })
 }
