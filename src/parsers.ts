@@ -1,5 +1,6 @@
 import { WorkSheet } from "xlsx";
 
+import { formatteDate, formatteDiagram, formatteDiagramName } from "./formatter";
 import { Calendar } from "./types";
 
 /// `xlsx` ファイルをパースするオブジェクトのインターフェース.
@@ -53,10 +54,10 @@ export class CalendarParser implements XLSXParsable<Calendar[]> {
       }
 
       // カレンダーのデータを組み立て.
-      const date = year.toString() + "-" + month.toString().padStart(2, "0") + "-" + dateValue.toString().padStart(2, "0");
-      const diagram = diaValue;
-      const diagramName = diaValue + "ダイヤ";
-      const isSuspend = diaValue === "運休"
+      const date = formatteDate(year, month, dateValue);
+      const diagram = formatteDiagram(diaValue);
+      const diagramName = formatteDiagramName(diagram);
+      const isSuspend = diagram === "suspension"
       const calendar: Calendar = {
         date: date,
         diagram: diagram,
