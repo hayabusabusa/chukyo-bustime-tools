@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import { CalendarParser } from "./parsers";
 
 const main = () => {
-  const book = XLSX.readFile("book.xlsx");
+  const book = XLSX.readFile("resource/calendar.xlsx");
   const sheetName = book.SheetNames.at(0);
   
   if (sheetName == null) {
