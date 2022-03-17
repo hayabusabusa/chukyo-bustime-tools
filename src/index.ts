@@ -1,6 +1,7 @@
 import * as XLSX from "xlsx";
 
 import { CalendarParser } from "./parsers";
+import { outputJSON } from "./output";
 
 const main = () => {
   const book = XLSX.readFile("resource/calendar.xlsx");
@@ -15,7 +16,7 @@ const main = () => {
   const parser = new CalendarParser();
   const calendars = parser.parse(sheet);
 
-  console.log(calendars);
+  outputJSON(calendars, "calendar");
 };
 
 main();
