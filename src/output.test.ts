@@ -7,6 +7,13 @@ interface Stub {
   content: string
 }
 
+beforeAll(() => {
+  // `resource` フォルダがない場合は作成.
+  if (!fs.existsSync("resource")) {
+    fs.mkdirSync("resource");
+  }
+});
+
 test("オブジェクトから JSON ファイルが出力できること", () => {
   const singleObject: Stub = {
     id: 0,
