@@ -7,5 +7,5 @@ import * as fs from "fs";
  */
 export function outputJSON(object: any, fileName: string) {
   const json = JSON.stringify(object);
-  fs.writeFile("resource/" + fileName + ".json", json, () => {});
+  fs.writeFileSync("resource/" + fileName + ".json", json);
 }
