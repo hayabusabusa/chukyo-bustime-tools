@@ -3,13 +3,20 @@ import { WorkSheet } from "xlsx";
 import { formatteDate, formatteDiagram, formatteDiagramName } from "./formatter";
 import { Calendar } from "./types";
 
-/// `xlsx` ファイルをパースするオブジェクトのインターフェース.
+/**
+ * `xlsx` ファイルをパースするオブジェクトのインターフェース.
+ */
 export interface XLSXParsable<T> {
-  /// シートからデータを抜き出す.
+  /**
+   * シートからデータを抜き出す.
+   * @param sheet xlsx のシート.
+   */
   parse(sheet: WorkSheet): T;
 }
 
-/// カレンダーの xlsx ファイルをパースするクラス.
+/**
+ * カレンダーの xlsx ファイルをパースするクラス.
+ */
 export class CalendarParser implements XLSXParsable<Calendar[]> {
 
   parse(sheet: WorkSheet): Calendar[] {

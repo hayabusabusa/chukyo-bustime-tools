@@ -1,12 +1,25 @@
-/// カレンダーのコレクションに格納するデータ.
+/**
+ * カレンダーのコレクションに格納するデータ.
+ */ 
 export interface Calendar {
-  /// 日付.
-  /// `yyyy-MM-dd` の形式.
+  /**
+   * 日付
+   * `yyyy-MM-dd` の形式.
+   */
   date: string
-  /// ダイヤ.
+
+  /**
+   * ダイヤ.
+   */
   diagram: string
-  /// ダイヤ名.
+  
+  /**
+   * ダイヤ名.
+   */
   diagramName: string
-  /// 運行休止がどうか.
+  
+  /**
+   * 運行休止がどうか.
+   */
   isSuspend: boolean
 }
