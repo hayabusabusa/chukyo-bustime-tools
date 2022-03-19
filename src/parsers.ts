@@ -4,6 +4,21 @@ import { formatteDate, formatteDiagram, formatteDiagramName } from "./formatter"
 import { Calendar } from "./types";
 
 /**
+ * 日付とダイヤの X 座標をまとめたもの.
+ */
+interface XCoordinate {
+  /**
+   * 日付の X 座標.
+   */
+  date: string,
+
+  /**
+   * ダイヤの X 座標.
+   */
+  dia: string
+}
+
+/**
  * `xlsx` ファイルをパースするオブジェクトのインターフェース.
  */
 export interface XLSXParsable<T> {
@@ -20,10 +35,16 @@ export interface XLSXParsable<T> {
 export class CalendarParser implements XLSXParsable<Calendar[]> {
 
   parse(sheet: WorkSheet): Calendar[] {
-    // 日付が入っている X 座標.
-    const xDateCoordinates = ["C", "E", "G", "I", "K", "M", "O"];
-    // ダイヤ名が入っている X 座標.
-    const xDiaCoordinates = ["D", "F", "H", "J", "L", "N", "P"];
+    // アクセスする X 座標一覧.
+    const xCoordinates: XCoordinate[] = [
+      { date: "C", dia: "D" },
+      { date: "E", dia: "F" },
+      { date: "G", dia: "H" },
+      { date: "I", dia: "J" },
+      { date: "K", dia: "L" },
+      { date: "M", dia: "N" },
+      { date: "O", dia: "P" }
+    ]
 
     // 月は 3 月から始める.
     let month = 3;
@@ -39,10 +60,12 @@ export class CalendarParser implements XLSXParsable<Calendar[]> {
     // `3C`、`3D`、... の順でセルにアクセスしていく.
     // `57P` になったらループを抜ける.
     while (yCoordinate <= 57) {
+      // 日付とダイヤの X 座標.
+      const xCoordinate = xCoordinates[xIndex];
       // `3C` のような形で日付が格納されているセルの座標を作る.
-      const dateCoordinate = xDateCoordinates[xIndex] + yCoordinate.toString();
+      const dateCoordinate = xCoordinate.date + yCoordinate.toString();
       // `3D` のような形で日付の横にあるダイヤが格納されているセルの座標を作る.
-      const diaCoordinate = xDiaCoordinates[xIndex] + yCoordinate.toString();
+      const diaCoordinate = xCoordinate.dia + yCoordinate.toString();
 
       // 日付を取り出す、空白の場合は `undefined` になる
       const dateValue: number = sheet[dateCoordinate]?.v ?? -1;
@@ -75,7 +98,7 @@ export class CalendarParser implements XLSXParsable<Calendar[]> {
 
       // 次の X 座標に進む.
       xIndex += 1;
-      if (xIndex >= xDateCoordinates.length) {
+      if (xIndex >= xCoordinates.length) {
         xIndex = 0;
         yCoordinate += 1;
       }
