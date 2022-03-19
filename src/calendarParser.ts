@@ -1,6 +1,6 @@
 import { WorkSheet } from "xlsx";
 
-import { XLSXParsable } from "./parsers";
+import { XLSXParsable } from "./xlsxParsable";
 import { formatteDate, formatteDiagram, formatteDiagramName } from "./formatter";
 import { Calendar } from "./types";
 
