@@ -129,6 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# xlsx and other file
-*.xlsx
-resource/*.json
+# outputs directory
+outputs

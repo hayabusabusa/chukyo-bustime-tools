@@ -8,9 +8,9 @@ interface Stub {
 }
 
 beforeAll(() => {
-  // `resource` フォルダがない場合は作成.
-  if (!fs.existsSync("resource")) {
-    fs.mkdirSync("resource");
+  // `outputs` フォルダがない場合は作成.
+  if (!fs.existsSync("outputs")) {
+    fs.mkdirSync("outputs");
   }
 });
 
@@ -22,7 +22,7 @@ test("オブジェクトから JSON ファイルが出力できること", () =>
 
   outputJSON(singleObject, "test1");
 
-  expect(fs.existsSync("resource/test1.json")).toBe(true);
+  expect(fs.existsSync("outputs/test1.json")).toBe(true);
 
   const arrayObject: Stub[] = [
     {
@@ -37,5 +37,5 @@ test("オブジェクトから JSON ファイルが出力できること", () =>
 
   outputJSON(arrayObject, "test2");
 
-  expect(fs.existsSync("resource/test2.json")).toBe(true);
+  expect(fs.existsSync("outputs/test2.json")).toBe(true);
 })
