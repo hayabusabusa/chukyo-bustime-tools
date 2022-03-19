@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 
-import { CalendarParser } from "./parsers";
+import { CalendarParser } from "./calendarParser";
 import { outputJSON } from "./output";
 
 const main = () => {
