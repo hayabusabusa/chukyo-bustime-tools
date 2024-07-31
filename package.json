@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc -p .",
+    "start": "npx ts-node src/index.ts",
     "test": "jest"
   },
   "keywords": [],
