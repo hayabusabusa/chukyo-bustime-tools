@@ -10,13 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.2",
-    "xlsx": "^0.18.3"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@swc/jest": "^0.2.20",
     "@types/jest": "^27.4.1",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
