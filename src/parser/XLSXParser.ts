@@ -1,35 +1,6 @@
 import * as XLSX from "xlsx";
 
-/**
- * `xlsx` ファイルの座標.
- */
-export interface XLSXCoordinate {
-  /**
-   * X 座標.
-   */
-  x: string;
-  /**
-   * Y 座標.
-   */
-  y: number
-}
-
-export type XLSXCallback = (coordinate: XLSXCoordinate, value: string) => void;
-
-/**
- * XSLXファイルパース時にアクセスする情報などをまとめたモデル.
- */
-export interface XLSXParseConfiguration {
-  /**
-   * 読み込むXSLXファイルのパス.
-   */
-  sheetPath: string
-
-  /**
-   * 座標ごとのデータを取得した際に呼び出されるコールバック.
-   */
-  callback?: XLSXCallback
-}
+import { XLSXCoordinate, XLSXParseConfiguration } from "../types/";
 
 /**
  * `xlsx` ファイルからデータを抜き出すクラス.
