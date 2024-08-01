@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 
-import { XLSXCoordinate, XLSXParseConfiguration } from "../types/";
+import { XLSXCoordinate, XLSXParseConfiguration } from "../types";
 
 /**
  * `xlsx` ファイルからデータを抜き出すクラス.
