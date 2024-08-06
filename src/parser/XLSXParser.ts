@@ -1,6 +1,10 @@
 import * as XLSX from "xlsx";
 
-import { XLSXCoordinate, XLSXParseConfiguration } from "../types";
+import { 
+  XLSXCoordinate, 
+  XLSXData, 
+  XLSXParseConfiguration
+} from "../types";
 
 /**
  * `xlsx` ファイルからデータを抜き出すクラス.
@@ -9,22 +13,60 @@ export class XLSXParser {
   /**
    * 指定された `xlsx` ファイルからデータを抜き出す.
    * @param configuration 読み込むファイルの設定など.
+   * @returns `xlsx` ファイルから抜き出したデータ一覧.
    */
-  parse(configuration: XLSXParseConfiguration) {
+  parseAll(configuration: XLSXParseConfiguration): XLSXData[] {
     const book = XLSX.readFile(configuration.sheetPath);
     const sheet = book.Sheets[book.SheetNames.at(0) ?? ""];
 
     // xlsx ファイルの最後までの範囲を取得.
     const range = XLSX.utils.decode_range(sheet['!ref']!);
-    const endOfFileRow = range.e.r;
-    const endOfFileColumn = range.e.c;
+
+    // 開始座標の設定.
+    const startX = configuration.startCoordinate?.x
+    const startY = configuration.startCoordinate?.y
+
+    let startRow = range.s.r;
+    let startColumn = range.s.c;
+    if (startX !== undefined && startY !== undefined) {
+      startRow = XLSX.utils.decode_row(startY.toString());
+      startColumn = XLSX.utils.decode_col(startX);
+    }
+
+    // 終了座標の設定.
+    const endX = configuration.endCoordinate?.x;
+    const endY = configuration.endCoordinate?.y;
+
+    let endRow = range.e.r;
+    let endColumn = range.e.c;
+    if (endX !== undefined && endY !== undefined) {
+      endRow = XLSX.utils.decode_row(endY.toString());
+      endColumn = XLSX.utils.decode_col(endX);
+    }
+
+    // スキップ範囲の設定.
+    let skipRange: XLSX.Range | undefined;
+    if (configuration.skipRange !== undefined) {
+      const from = configuration.skipRange.from;
+      const to = configuration.skipRange.to;
+      skipRange = XLSX.utils.decode_range(`${from.x}${from.y}:${to.x}${to.y}`);
+    }
 
     // 座標 1 つずつにアクセスして値を取得.
-    for (let row = range.s.r; row <= endOfFileRow; row++) {
-      for (let column = range.s.c; column <= endOfFileColumn; column++) {
+    let data: XLSXData[] = [];
+    for (let row = startRow; row <= endRow; row++) {
+      for (let column = startColumn; column <= endColumn; column++) {
+        if (
+          skipRange !== undefined && 
+          skipRange.s.r <= row && row <= skipRange.e.r && 
+          skipRange.s.c <= column && column <= skipRange.e.c
+        ) {
+          break;
+        }
+
         const address: XLSX.CellAddress = { 
-          c: column, 
-          r: row 
+          c: column,
+          r: row
         };
         // `A1` のような形式に変換する.
         const reference = XLSX.utils.encode_cell(address);
@@ -35,9 +77,25 @@ export class XLSXParser {
             x: XLSX.utils.encode_col(column),
             y: row
           }
-          configuration.callback?.(coordinate, cell.v);
+          data.push({
+            coordinate,
+            value: cell.v.toString(),
+            rawValue: cell.r.toString(),
+          });
+        }
+
+        // 終了 X 座標に到達したらループを抜ける.
+        if (column === endColumn) {
+          break;
         }
       }
+
+      // 終了 Y 座標に到達したらループを抜ける.
+      if (row === endRow) {
+        break;
+      }
     }
+
+    return data;
   }
 }
