@@ -1,21 +1,29 @@
 import { XLSXCoordinate } from "./XLSXCoordinate.js";
 
 /**
- * `XLSXParseConfiguration` に指定するコールバックの型.
- */
-export type XLSXCallback = (coordinate: XLSXCoordinate, value: string) => void;
-
-/**
  * XSLXファイルパース時にアクセスする情報などをまとめたモデル.
  */
 export interface XLSXParseConfiguration {
   /**
    * 読み込むXSLXファイルのパス.
    */
-  sheetPath: string
+  sheetPath: string;
 
   /**
-   * 座標ごとのデータを取得した際に呼び出されるコールバック.
+   * 読み込みを開始する座標.
    */
-  callback?: XLSXCallback
+  startCoordinate?: XLSXCoordinate;
+
+  /**
+   * 読み込みを終了する座標.
+   */
+  endCoordinate?: XLSXCoordinate;
+
+  /**
+   * 読み込みをスキップする範囲.
+   */
+  skipRange?: {
+    from: XLSXCoordinate;
+    to: XLSXCoordinate;
+  };
 }

@@ -1,2 +1,4 @@
-export * from "./XLSXCoordinate.js";
-export * from "./XLSXParseConfiguration.js";
+export * from "./Timetable";
+export * from "./XLSXCoordinate";
+export * from "./XLSXData";
+export * from "./XLSXParseConfiguration";
