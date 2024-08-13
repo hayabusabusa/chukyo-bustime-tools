@@ -80,7 +80,7 @@ export class XLSXParser {
           data.push({
             coordinate,
             value: cell.v.toString(),
-            rawValue: cell.r.toString(),
+            rawValue: cell?.r?.toString(),
           });
         }
 
