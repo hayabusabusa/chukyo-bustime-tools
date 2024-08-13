@@ -13,6 +13,26 @@ export interface Timetable {
   minute: number;
 
   /**
+   * 出発時刻を 00:00 からの経過秒数に変換した値.
+   */
+  second: number;
+
+  /**
+   * 見込みで算出した到着時刻の時間.
+   */
+  arrivalHour: number;
+
+  /**
+   * 見込みで算出した到着時刻の分.
+   */
+  arrivalMinute: number;
+
+  /**
+   * 見込みで算出した到着時刻を 00:00 からの経過秒数に変換した値.
+   */
+  arrivalSecond: number;
+
+  /**
    * 折り返し運行かどうか.
    */
   isReturn: boolean;
@@ -21,9 +41,9 @@ export interface Timetable {
    * 貝津駅経由かどか.
    */
   isKaizu: boolean;
-}
 
-export interface Diagram {
-  name: string;
-  timetables: Timetable[];
+  /**
+   * 最終バスかどうか.
+   */
+  isLast: boolean;
 }
