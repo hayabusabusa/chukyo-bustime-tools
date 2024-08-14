@@ -44,26 +44,10 @@ export class XLSXParser {
       endColumn = XLSX.utils.decode_col(endX);
     }
 
-    // スキップ範囲の設定.
-    let skipRange: XLSX.Range | undefined;
-    if (configuration.skipRange !== undefined) {
-      const from = configuration.skipRange.from;
-      const to = configuration.skipRange.to;
-      skipRange = XLSX.utils.decode_range(`${from.x}${from.y}:${to.x}${to.y}`);
-    }
-
     // 座標 1 つずつにアクセスして値を取得.
     let data: XLSXData[] = [];
     for (let row = startRow; row <= endRow; row++) {
       for (let column = startColumn; column <= endColumn; column++) {
-        if (
-          skipRange !== undefined && 
-          skipRange.s.r <= row && row <= skipRange.e.r && 
-          skipRange.s.c <= column && column <= skipRange.e.c
-        ) {
-          break;
-        }
-
         const address: XLSX.CellAddress = { 
           c: column,
           r: row

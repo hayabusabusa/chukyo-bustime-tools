@@ -18,12 +18,4 @@ export interface XLSXParseConfiguration {
    * 読み込みを終了する座標.
    */
   endCoordinate?: XLSXCoordinate;
-
-  /**
-   * 読み込みをスキップする範囲.
-   */
-  skipRange?: {
-    from: XLSXCoordinate;
-    to: XLSXCoordinate;
-  };
 }
