@@ -41,22 +41,21 @@ export class TimetableFormatter {
   }
 
   /**
-   * スタイルが入ったデータから折り返し運行かどうかを判定する.
-   * @param rawValue スタイル入りのデータ.
-   * @returns 折り返し運行かどうか.
-   */
-  formatIsReturn(rawValue: string): boolean {
-    return rawValue.includes("折返し運行");
-  }
-
-  /**
    * スタイルが入ったデータから分一覧に変換する.
    * @param rawValue スタイル入りのデータ.
+   * @param value スタイルが入っていない文字列のデータ.
    * @returns 分一覧
    */
-  formatMinutes(rawValue: string | undefined): TimetableMinute[] {
+  formatMinutes(rawValue: string | undefined, value: string): TimetableMinute[] {
+    // スタイルが入っていないデータがあるため、その場合は `value` から分を取得する.
     if (rawValue == null) {
-      return [];
+      const matchedMinutes = value.match(/\d+/g);
+      return matchedMinutes?.map((minute) => {
+        return {
+          value: parseInt(minute),
+          isKaizu: false,
+        }
+      }) ?? [];
     }
 
     // 配列になるパターンがあるため、一旦 `any` として扱う.

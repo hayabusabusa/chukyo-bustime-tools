@@ -23,7 +23,8 @@ export class TimetableXSLXParser extends XLSXParser {
     let timetables: Timetable[] = [];
     let currentHours: number | undefined;
     let currentMinutes: TimetableMinute[] | undefined;
-    let currentIsReturn = false;
+    // 折り返し運行に関しては別途データを作成するため、固定で `false` を入れておく.
+    const currentIsReturn = false;
     data.forEach((element, dataIndex) => {
       // 指定された X 座標の時に時間を取得する.
       if (element.coordinate.x === configuration.hourCoordinateX) {
@@ -31,8 +32,7 @@ export class TimetableXSLXParser extends XLSXParser {
       }
       // 指定された X 座標の時に分一覧を取得する.
       if (element.coordinate.x === configuration.minutesCoordinateX) {
-        currentMinutes = this.formatter.formatMinutes(element.rawValue);
-        currentIsReturn = element.rawValue !== undefined ? this.formatter.formatIsReturn(element.rawValue) : false;
+        currentMinutes = this.formatter.formatMinutes(element.rawValue, element.value);
       }
       
       // 時間と分が揃ったらデータを作って追加する.
