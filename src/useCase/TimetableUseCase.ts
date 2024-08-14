@@ -1,6 +1,6 @@
 import { TimetableFormatter } from "../formatter";
 import { JSONOutput } from "../output";
-import { TimetableXSLXParser } from "../parser";
+import { TimetableXSLXParser, TimetableReturnXSLXParser } from "../parser";
 
 /**
  * 時刻表の xlsx ファイルからデータを抜き出す UseCase.
@@ -11,9 +11,9 @@ export class TimetableUseCase {
    */
   async execute() {
     const jsonOutput = new JSONOutput('./outputs');
-    const parser = new TimetableXSLXParser(
-      new TimetableFormatter(),
-    );
+    const formatter = new TimetableFormatter();
+    const parser = new TimetableXSLXParser(formatter);
+    const returnParser = new TimetableReturnXSLXParser(formatter);
 
     const diaAToCollege = parser.parseForEachDia({
       isToStation: false,
@@ -47,8 +47,24 @@ export class TimetableUseCase {
 
     await jsonOutput.output(diaAToStation, "diaAToStation");
 
+    const diaAToStationReturn = returnParser.parseForEachDiaOnlyReturn({
+      startCoordinate: {
+        x: "A",
+        y: 4,
+      },
+      endCoordinate: {
+        x: "B",
+        y: 7,
+      },
+      collegeHourCoordinateX: "A",
+      collegeMinutesCoordinateX: "B",
+      dropLast: 8,
+    })
+
+    await jsonOutput.output(diaAToStationReturn, "diaAToStationReturn");
+
     const diaBToCollege = parser.parseForEachDia({
-      isToStation: true,
+      isToStation: false,
       hourCoordinateX: "A",
       minutesCoordinateX: "B",
       startCoordinate: {
@@ -80,7 +96,7 @@ export class TimetableUseCase {
     await jsonOutput.output(diaBToStation, "diaBToStation");
 
     const diaCToCollege = parser.parseForEachDia({
-      isToStation: true,
+      isToStation: false,
       hourCoordinateX: "A",
       minutesCoordinateX: "B",
       startCoordinate: {
@@ -112,7 +128,7 @@ export class TimetableUseCase {
     await jsonOutput.output(diaCToStation, "diaCToStation");
 
     const diaADashToCollege = parser.parseForEachDia({
-      isToStation: true,
+      isToStation: false,
       hourCoordinateX: "A",
       minutesCoordinateX: "B",
       startCoordinate: {
@@ -143,8 +159,24 @@ export class TimetableUseCase {
 
     await jsonOutput.output(diaADashToStation, "diaADashToStation");
 
+    const diaADashToStationReturn = returnParser.parseForEachDiaOnlyReturn({
+      startCoordinate: {
+        x: "A",
+        y: 93,
+      },
+      endCoordinate: {
+        x: "B",
+        y: 96,
+      },
+      collegeHourCoordinateX: "A",
+      collegeMinutesCoordinateX: "B",
+      dropLast: 8,
+    })
+
+    await jsonOutput.output(diaADashToStationReturn, "diaADashToStationReturn");
+
     const diaSpecialToCollege = parser.parseForEachDia({
-      isToStation: true,
+      isToStation: false,
       hourCoordinateX: "A",
       minutesCoordinateX: "B",
       startCoordinate: {
