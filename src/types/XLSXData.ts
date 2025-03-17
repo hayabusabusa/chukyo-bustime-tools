@@ -12,7 +12,7 @@ export interface XLSXData {
   /**
    * データの値.
    */
-  value: string;
+  value?: string;
 
   /**
    * スタイルの情報が入った状態の値.

@@ -56,17 +56,15 @@ export class XLSXParser {
         const reference = XLSX.utils.encode_cell(address);
         const cell = sheet[reference];
 
-        if (cell && cell.v !== undefined) {
-          const coordinate: XLSXCoordinate = {
-            x: XLSX.utils.encode_col(column),
-            y: row
-          }
-          data.push({
-            coordinate,
-            value: cell.v.toString(),
-            rawValue: cell?.r?.toString(),
-          });
+        const coordinate: XLSXCoordinate = {
+          x: XLSX.utils.encode_col(column),
+          y: row
         }
+        data.push({
+          coordinate,
+          value: cell?.v?.toString(),
+          rawValue: cell?.r?.toString(),
+        });
 
         // 終了 X 座標に到達したらループを抜ける.
         if (column === endColumn) {

@@ -26,13 +26,15 @@ export class TimetableXSLXParser extends XLSXParser {
     // 折り返し運行に関しては別途データを作成するため、固定で `false` を入れておく.
     const currentIsReturn = false;
     data.forEach((element, dataIndex) => {
+      const value = element.value ?? "";
+
       // 指定された X 座標の時に時間を取得する.
       if (element.coordinate.x === configuration.hourCoordinateX) {
-        currentHours = this.formatter.formatHours(element.value);
+        currentHours = this.formatter.formatHours(value);
       }
       // 指定された X 座標の時に分一覧を取得する.
       if (element.coordinate.x === configuration.minutesCoordinateX) {
-        currentMinutes = this.formatter.formatMinutes(element.rawValue, element.value);
+        currentMinutes = this.formatter.formatMinutes(element.rawValue, value);
       }
       
       // 時間と分が揃ったらデータを作って追加する.
