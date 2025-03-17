@@ -1,3 +1,6 @@
+export * from "./Calendar";
+export * from "./CalendarXLSXParseConfiguration";
+export * from "./Diagram";
 export * from "./Timetable";
 export * from "./TimetableMinute";
 export * from "./TimetableXLSXParseConfiguration";
