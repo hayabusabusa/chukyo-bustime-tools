@@ -28,6 +28,18 @@ const isDiagramValueMatched = (diagram: string) => {
     return Object.values(Diagram).includes(diagram);
 };
 
+/**
+ * `Calendar` の配列を `date` の値をキーにした辞書配列に変換する.
+ * @param calendars カレンダーのデータ一覧.
+ */
+const entries = (calendars: Calendar[]) => {
+    return calendars.reduce((acc, calendar) => {
+        acc[calendar.date] = calendar;
+        return acc;
+    }, 
+    {} as { [key: string]: Calendar });
+}
+
 test("カレンダーの xlsx ファイルをパースできること", () => {
     const formatter = new CalendarFormatter();
     const parser = new CalendarXSLXParser(formatter);
@@ -41,4 +53,27 @@ test("カレンダーの xlsx ファイルをパースできること", () => {
         // `isSuspended` の値がダイヤと対応していること.
         expect(isSuspendedValueMatched(calendar)).toBe(true);
     });
+
+    // 特定の日付が正しいダイヤになっていること.
+    const calendarEntries = entries(calendars);
+    expect(calendarEntries["2025-03-20"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2025-04-29"].diagram).toEqual(Diagram.aDash);
+    expect(calendarEntries["2025-05-03"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2025-05-17"].diagram).toEqual(Diagram.c);
+    expect(calendarEntries["2025-06-14"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-07-20"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-07-21"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2025-08-01"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-08-11"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2025-08-22"].diagram).toEqual(Diagram.b);
+    expect(calendarEntries["2025-08-23"].diagram).toEqual(Diagram.c);
+    expect(calendarEntries["2025-09-05"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-09-12"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-10-13"].diagram).toEqual(Diagram.aDash);
+    expect(calendarEntries["2025-11-02"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2025-11-23"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2025-11-24"].diagram).toEqual(Diagram.aDash);
+    expect(calendarEntries["2026-01-17"].diagram).toEqual(Diagram.suspension);
+    expect(calendarEntries["2026-01-26"].diagram).toEqual(Diagram.special);
+    expect(calendarEntries["2026-03-19"].diagram).toEqual(Diagram.b);
 });
