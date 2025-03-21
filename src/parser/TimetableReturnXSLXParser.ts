@@ -28,7 +28,7 @@ export class TimetableReturnXSLXParser extends XLSXParser {
    */
   parseForEachDiaOnlyReturn(configuration: TimetableReturnXSLXParserConfiguration): Timetable[] {
     const data = super.parseAll({
-      sheetPath: "resource/bustime-timetable-20240425.xlsx",
+      sheetPath: "resource/timetable.xlsx",
       startCoordinate: configuration.startCoordinate,
       endCoordinate: configuration.endCoordinate,
     });

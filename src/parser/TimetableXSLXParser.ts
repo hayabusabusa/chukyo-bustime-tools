@@ -15,7 +15,7 @@ export class TimetableXSLXParser extends XLSXParser {
 
   parseForEachDia(configuration: TimetableXLSXParseConfiguration): Timetable[] {
     const data = super.parseAll({
-      sheetPath: "resource/bustime-timetable-20240425.xlsx",
+      sheetPath: "resource/timetable.xlsx",
       startCoordinate: configuration.startCoordinate,
       endCoordinate: configuration.endCoordinate,
     });
