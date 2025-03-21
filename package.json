@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc -p .",
     "start": "npx ts-node src/index.ts",
+    "parse:timetable": "npx ts-node src/scripts/ParseTimetable.ts",
+    "parse:calendar": "npx ts-node src/scripts/ParseCalendar.ts",
     "test": "jest"
   },
   "keywords": [],
