@@ -50,6 +50,7 @@ export class CalendarXSLXParser extends XLSXParser {
             // 日付、ダイヤが揃ったらデータを作る.
             if (
                 currentDate !== undefined &&
+                !isNaN(currentDate) &&
                 currentDiagram !== undefined
             ) {
                 // 1 日から始まった時以外かつ日付に 1 が出てきたタイミングで月の値を加算する.

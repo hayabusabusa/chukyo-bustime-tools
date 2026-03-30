@@ -38,20 +38,20 @@ export interface CalendarXLSXParseConfiguration extends XLSXParseConfiguration {
 }
 
 /**
- * 2025 年のカレンダーの `xlsx` ファイルパースのデフォルト設定.
+ * 2026 年のカレンダーの `xlsx` ファイルパースのデフォルト設定.
  */
 export const calendarXLSXParseDefaultConfiguration: CalendarXLSXParseConfiguration = {
     sheetPath: 'resource/calendar.xlsx',
     startCoordinate: {
         x: 'A',
-        y: 3,
+        y: 6,
     },
     endCoordinate: {
         x: 'O',
         y: 57,
     },
-    year: 2025,
-    month: 3,
+    year: 2026,
+    month: 4,
     dateCoordinates: [
         'B',
         'D',
@@ -73,6 +73,7 @@ export const calendarXLSXParseDefaultConfiguration: CalendarXLSXParseConfigurati
     bDiagramValues: [
         '卒業式（予定）',
         'Ｂ高大接続入試(現社)',
+        'B（休講）',
         '卒業式（予定）',
     ],
     cDiagramValues: [
@@ -82,6 +83,7 @@ export const calendarXLSXParseDefaultConfiguration: CalendarXLSXParseConfigurati
     specialDiagramValues: [
         '教育懇談会（豊田予定）',
         'オープンキャンパス',
+        'ｵｰﾌﾟﾝｷｬﾝﾊﾟｽ',
         '定期試験',
         '高大連携授業',
         '附属高校体育祭',
