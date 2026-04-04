@@ -31,6 +31,17 @@ export class TimetableFormatter {
   }
 
   /**
+   * スタイルが入ったデータから分一覧に変換する.
+   * @param value スタイルが入っていない文字列のデータ.
+   * @returns 分一覧
+   */
+  formateMinute(value: string): number | undefined {
+    const parsedValue = parseInt(value);
+    // 空白のセルを読み込むことで空文字が入ってくるパターンがあるため、その場合は `undefined` で返す.
+    return Number.isNaN(parsedValue) ? undefined : parsedValue
+  }
+
+  /**
    * 時間と分から 00:00 からの経過秒数に変換する.
    * @param hour 時間.
    * @param minute 分.

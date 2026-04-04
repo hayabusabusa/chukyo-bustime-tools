@@ -21,57 +21,70 @@ export class TimetableXSLXParser extends XLSXParser {
     });
 
     let timetables: Timetable[] = [];
+    let currentCoordinateY: number | undefined;
     let currentHours: number | undefined;
-    let currentMinutes: TimetableMinute[] | undefined;
+    let currentMinute: number | undefined;
     // 折り返し運行に関しては別途データを作成するため、固定で `false` を入れておく.
     const currentIsReturn = false;
     data.forEach((element, dataIndex) => {
       const value = element.value ?? "";
 
+      // Y 座標が変わったら時間をリセットする.
+      if (currentCoordinateY !== element.coordinate.y) {
+        currentHours = undefined;
+      }
+
       // 指定された X 座標の時に時間を取得する.
       if (element.coordinate.x === configuration.hourCoordinateX) {
+        currentCoordinateY = element.coordinate.y;
         currentHours = this.formatter.formatHours(value);
       }
-      // 指定された X 座標の時に分一覧を取得する.
-      if (element.coordinate.x === configuration.minutesCoordinateX) {
-        currentMinutes = this.formatter.formatMinutes(element.rawValue, value);
+      // 指定された X 座標の時に分を取得する.
+      if (configuration.minutesCoordinateX.includes(element.coordinate.x)) {
+        currentMinute = this.formatter.formateMinute(value);
       }
+
+      // ログ表示用
+      // console.log(`${element.coordinate.x},${element.coordinate.y} = ${value}, ${element.rawValue}`);
       
       // 時間と分が揃ったらデータを作って追加する.
       if (
         currentHours !== undefined &&
-        currentMinutes !== undefined
+        currentMinute !== undefined
       ) {
-        const currentHourTimetables = currentMinutes.map((minute, minuteIndex) => {
-          const second = this.formatter.formatSecond(currentHours!, minute.value);
-          const arrivalDate = this.formatter.formatArrivalDate({
-            hours: currentHours!,
-            minute: minute.value,
-            isToStation: configuration.isToStation,
-            isKaizu: minute.isKaizu,
-          });
-          const arrivalHour = arrivalDate.getHours();
-          const arrivalMinute = arrivalDate.getMinutes();
-          const arrivalSecond = this.formatter.formatSecond(arrivalHour, arrivalMinute);
-          // 1番最後のデータなら終バス扱いにする.
-          const isLast = data.length - 1 === dataIndex && currentMinutes!.length - 1 === minuteIndex;
-          return {
-            hour: currentHours!,
-            minute: minute.value,
-            second: second,
-            arrivalHour: arrivalHour,
-            arrivalMinute: arrivalMinute,
-            arrivalSecond: arrivalSecond,
-            isReturn: currentIsReturn,
-            isKaizu: minute.isKaizu,
-            isLast: isLast,
-          };
+        const second = this.formatter.formatSecond(
+          currentHours,
+          currentMinute
+        );
+        const isKaizu = configuration.isKaizuCoordinates?.some((coordinate) => {
+          return coordinate.x === element.coordinate.x && coordinate.y === element.coordinate.y;
+        }) ?? false
+        const arrivalDate = this.formatter.formatArrivalDate({
+          hours: currentHours,
+          minute: currentMinute,
+          isToStation: configuration.isToStation,
+          isKaizu: isKaizu,
         });
-        timetables.push(...currentHourTimetables);
+        const arrivalHour = arrivalDate.getHours();
+        const arrivalMinute = arrivalDate.getMinutes();
+        const arrivalSecond = this.formatter.formatSecond(arrivalHour, arrivalMinute);
+        // 1番最後のデータなら終バス扱いにする.
+        const isLast = false;// data.length - 1 === dataIndex && currentMinutes!.length - 1 === minuteIndex;
+        const timetable: Timetable = {
+          hour: currentHours,
+          minute: currentMinute,
+          second: second,
+          arrivalHour: arrivalHour,
+          arrivalMinute: arrivalMinute,
+          arrivalSecond: arrivalSecond,
+          isReturn: currentIsReturn,
+          isKaizu: isKaizu,
+          isLast: isLast,
+        };
+        timetables.push(timetable);
 
-        // どちらも取得したらリセットする.
-        currentHours = undefined;
-        currentMinutes = undefined;
+        // 分のみリセットする.
+        currentMinute = undefined;
       }
     });
 
